@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EfData.Migrations
 {
     [DbContext(typeof(EfContext))]
-    [Migration("20180803090829_init2")]
-    partial class init2
+    [Migration("20180804052121_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,7 +37,7 @@ namespace EfData.Migrations
                     b.ToTable("Roles");
 
                     b.HasData(
-                        new { Id = new Guid("187e0a8a-9cac-4f36-80fe-db3e04ef03a8"), ConcurrencyStamp = "", Name = "admin", NormalizedName = "管理员" }
+                        new { Id = new Guid("b0f5c41c-b91c-44fc-80d8-4f03fa748aa6"), ConcurrencyStamp = "", Name = "admin", NormalizedName = "管理员" }
                     );
                 });
 
@@ -65,9 +65,11 @@ namespace EfData.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<string>("ConcurrencyStamp");
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken();
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
 
@@ -75,9 +77,11 @@ namespace EfData.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
-                    b.Property<string>("NormalizedEmail");
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256);
 
-                    b.Property<string>("NormalizedUserName");
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256);
 
                     b.Property<string>("PasswordHash");
 
@@ -89,14 +93,15 @@ namespace EfData.Migrations
 
                     b.Property<bool>("TwoFactorEnabled");
 
-                    b.Property<string>("UserName");
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256);
 
                     b.HasKey("Id");
 
                     b.ToTable("Users");
 
                     b.HasData(
-                        new { Id = new Guid("ec157a6f-81cf-47c2-be77-eae70d7f3e91"), AccessFailedCount = 0, ConcurrencyStamp = "6181a1d7-c006-4b87-83b3-c1b7bc28b62b", EmailConfirmed = false, LockoutEnabled = false, PasswordHash = "123456", PhoneNumberConfirmed = false, TwoFactorEnabled = false, UserName = "admin" }
+                        new { Id = new Guid("967775d9-a000-4f0b-9871-b25ef9548507"), AccessFailedCount = 0, ConcurrencyStamp = "c4593499-a0a6-4a00-ae82-ea7315b8afbf", EmailConfirmed = false, LockoutEnabled = false, PasswordHash = "123456", PhoneNumberConfirmed = false, TwoFactorEnabled = false, UserName = "admin" }
                     );
                 });
 
@@ -114,43 +119,47 @@ namespace EfData.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("UserClaims");
                 });
 
             modelBuilder.Entity("EfData.Models.UserLogin", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
                     b.Property<string>("LoginProvider");
-
-                    b.Property<string>("ProviderDisplayName");
 
                     b.Property<string>("ProviderKey");
 
+                    b.Property<string>("ProviderDisplayName");
+
                     b.Property<Guid>("UserId");
 
-                    b.HasKey("Id");
+                    b.HasKey("LoginProvider", "ProviderKey");
 
                     b.ToTable("UserLogins");
                 });
 
             modelBuilder.Entity("EfData.Models.UserToken", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<Guid>("UserId");
 
                     b.Property<string>("LoginProvider");
 
                     b.Property<string>("Name");
 
-                    b.Property<Guid>("UserId");
-
                     b.Property<string>("Value");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("UserTokens");
+                });
+
+            modelBuilder.Entity("EfData.Models.UserClaim", b =>
+                {
+                    b.HasOne("EfData.Models.User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

@@ -3,9 +3,11 @@ using EfData.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace demo1
 {
@@ -22,6 +24,7 @@ namespace demo1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddIdentity<User, Role>()
+                .AddUserStore<UserStore<User,Role,EfContext,Guid>>()
                 .AddEntityFrameworkStores<EfContext>()
                 .AddDefaultTokenProviders();
 

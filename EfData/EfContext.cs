@@ -19,6 +19,22 @@ namespace EfData
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>(b=> {
+                b.Property(u => u.ConcurrencyStamp).IsConcurrencyToken();
+
+                b.Property(u => u.UserName).HasMaxLength(256);
+                b.Property(u => u.NormalizedUserName).HasMaxLength(256);
+                b.Property(u => u.Email).HasMaxLength(256);
+                b.Property(u => u.NormalizedEmail).HasMaxLength(256);
+                b.HasMany<UserClaim>().WithOne().HasForeignKey(uc => uc.UserId).IsRequired();
+
+
+            });
+
+
+            modelBuilder.Entity<UserLogin>().HasKey(l => new { l.LoginProvider, l.ProviderKey });
+            modelBuilder.Entity<UserToken>().HasKey(t => new { t.UserId, t.LoginProvider, t.Name });
+
             modelBuilder.Entity<User>().HasData(new User { Id = Guid.NewGuid(), UserName = "admin", PasswordHash = "123456" });
             modelBuilder.Entity<Role>().HasData(new Role { Id = Guid.NewGuid(), Name = "admin", NormalizedName = "管理员", ConcurrencyStamp = "" });
         }

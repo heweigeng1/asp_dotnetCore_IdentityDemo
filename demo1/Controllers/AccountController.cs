@@ -18,9 +18,10 @@ namespace demo1.Controllers
             _userManager = userManager;
         }
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public ActionResult<string> Register(int id)
         {
-            _userManager.CreateAsync(new User { });
+            var user = new User { Id = Guid.NewGuid(), PhoneNumber = "13333333333", UserName = "admin", Email = "admin@163.com" };
+            _userManager.CreateAsync(user,"123456");
             return "value";
         }
 

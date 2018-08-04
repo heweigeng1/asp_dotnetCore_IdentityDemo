@@ -7,6 +7,5 @@ namespace EfData.Models
 {
     public class UserLogin : IdentityUserLogin<Guid>
     {
-        public Guid Id { get; set; }
     }
 }
