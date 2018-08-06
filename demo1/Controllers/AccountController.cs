@@ -12,17 +12,18 @@ namespace demo1.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private  UserManager<User> _userManager { get; set; }
+        private UserManager<User> _userManager { get; set; }
         public AccountController(UserManager<User> userManager)
         {
             _userManager = userManager;
         }
-        [HttpGet("{id}")]
-        public ActionResult<string> Register(int id)
+        [HttpGet]
+        [Route("register")]
+        public async Task<IdentityResult> Register()
         {
-            var user = new User { Id = Guid.NewGuid(), PhoneNumber = "13333333333", UserName = "admin", Email = "admin@163.com" };
-            _userManager.CreateAsync(user,"123456");
-            return "value";
+            var user = new User { Id = Guid.NewGuid(), PhoneNumber = "13333333333", UserName = "admin1", Email = "admin@163.com" };
+            var result = await _userManager.CreateAsync(user, "123456_zZ");
+            return result;
         }
 
     }

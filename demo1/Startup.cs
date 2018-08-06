@@ -24,7 +24,7 @@ namespace demo1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddIdentity<User, Role>()
-                .AddUserStore<UserStore<User,Role,EfContext,Guid>>()
+                .AddUserStore<TestUserStore>()
                 .AddEntityFrameworkStores<EfContext>()
                 .AddDefaultTokenProviders();
 
