@@ -21,7 +21,7 @@ namespace demo1.Controllers
         [Route("register")]
         public async Task<IdentityResult> Register()
         {
-            var user = new User { Id = Guid.NewGuid(), PhoneNumber = "13333333333", UserName = "admin1", Email = "admin@163.com" };
+            var user = new User { Id = Guid.NewGuid(), PhoneNumber = "13333333333", UserName = "admin2", Email = "admin@163.com" };
             var result = await _userManager.CreateAsync(user, "123456_zZ");
             return result;
         }

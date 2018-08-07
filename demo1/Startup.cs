@@ -25,7 +25,7 @@ namespace demo1
         {
             services.AddIdentity<User, Role>()
                 .AddUserStore<TestUserStore>()
-                .AddEntityFrameworkStores<EfContext>()
+                //.AddEntityFrameworkStores<EfContext>()
                 .AddDefaultTokenProviders();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
